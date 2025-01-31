@@ -1,13 +1,13 @@
 import * as cdk from 'aws-cdk-lib';
-import {Construct} from 'constructs';
-import {Queue} from "aws-cdk-lib/aws-sqs";
-import {Cluster, ContainerImage, FargateTaskDefinition, LogDriver} from "aws-cdk-lib/aws-ecs";
-import {CfnPipe} from "aws-cdk-lib/aws-pipes";
-import {SubnetType, Vpc} from "aws-cdk-lib/aws-ec2";
-import {Effect, PolicyStatement, Role, ServicePrincipal} from "aws-cdk-lib/aws-iam";
-import {JsonPath} from "aws-cdk-lib/aws-stepfunctions";
-import {RetentionDays} from "aws-cdk-lib/aws-logs";
-import {CfnOutput} from "aws-cdk-lib";
+import { Construct } from 'constructs';
+import { Queue } from "aws-cdk-lib/aws-sqs";
+import { Cluster, ContainerImage, FargateTaskDefinition, LogDriver } from "aws-cdk-lib/aws-ecs";
+import { CfnPipe } from "aws-cdk-lib/aws-pipes";
+import { SubnetType, Vpc } from "aws-cdk-lib/aws-ec2";
+import { Effect, PolicyStatement, Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
+import { JsonPath } from "aws-cdk-lib/aws-stepfunctions";
+import { RetentionDays } from "aws-cdk-lib/aws-logs";
+import { CfnOutput } from "aws-cdk-lib";
 
 export class AppStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -46,7 +46,9 @@ export class AppStack extends cdk.Stack {
         });
 
         fargateTaskDefinition.addContainer('defaultContainer', {
-            image: ContainerImage.fromRegistry('alpine'),
+            image: ContainerImage.fromRegistry('c.tsapp.dev/surajboniwaldump/kovr', {
+                credentials: cdk.SecretValue.secretsManager('kovr-registry-details')
+            }),
             logging: LogDriver.awsLogs({
                 streamPrefix: '/app/',
                 logRetention: RetentionDays.ONE_DAY
@@ -101,7 +103,17 @@ export class AppStack extends cdk.Stack {
                         containerOverrides: [
                             {
                                 name: fargateTaskDefinition.defaultContainer?.containerName,
-                                command: ['/bin/echo', JsonPath.stringAt('$.body.SQS_PAYLOAD')],
+                                command: ["python", "-m", "ssp_pipeline.main"],
+                                environment: [
+                                    {
+                                        name: 'PIPELINE',
+                                        value: 'compliance'
+                                    },
+                                    {
+                                        name: 'PAYLOAD',
+                                        value: JsonPath.stringAt('$.body')
+                                    }
+                                ]
                             },
                         ],
                         // this should not be required but CDK validation fails without it

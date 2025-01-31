@@ -46,12 +46,7 @@ export class AppStack extends cdk.Stack {
         });
 
         fargateTaskDefinition.addContainer('defaultContainer', {
-            image: ContainerImage.fromRegistry('c.tsapp.dev/surajboniwaldump/kovr', {
-                // credentials: cdk.SecretValue.secretsManager('kovr-registry-details'),
-                repositoryCredentials: {
-                    credentialsParameter: cdk.SecretValue.secretsManager('kovr-registry-details')
-                }
-            }),
+            image: ContainerImage.fromRegistry('296062557786.dkr.ecr.us-west-2.amazonaws.com/kovr:latest'),
             logging: LogDriver.awsLogs({
                 streamPrefix: '/app/',
                 logRetention: RetentionDays.ONE_DAY

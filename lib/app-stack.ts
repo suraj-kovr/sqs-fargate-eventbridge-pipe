@@ -46,7 +46,7 @@ export class AppStack extends cdk.Stack {
         });
 
         fargateTaskDefinition.addContainer('defaultContainer', {
-            image: ContainerImage.fromRegistry('296062557786.dkr.ecr.us-west-2.amazonaws.com/kovr:latest'),
+            image: ContainerImage.fromRegistry('767397841522.dkr.ecr.ap-south-1.amazonaws.com/kovr'),
             logging: LogDriver.awsLogs({
                 streamPrefix: '/app/',
                 logRetention: RetentionDays.ONE_DAY

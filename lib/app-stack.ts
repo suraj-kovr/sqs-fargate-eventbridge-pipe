@@ -28,7 +28,7 @@ export class AppStack extends cdk.Stack {
         });
 
         const fargateTaskDefinition = new FargateTaskDefinition(this, 'fargateTaskDefinition', {
-            memoryLimitMiB: 2048,
+            memoryLimitMiB: 8192,
             cpu: 4096,
             runtimePlatform: {
                 cpuArchitecture: cdk.aws_ecs.CpuArchitecture.ARM64,

@@ -15,7 +15,7 @@ const appConstants: Record<string, AppConstants> = {
             {
                 QUEUE_ARN: "arn:aws:sqs:us-west-2:296062557786:compliance-artifacts-queue",
                 QUEUE_NAME: "compliance-artifacts-queue",
-                PIPELINE_NAME: "compliance-artifacts-pipeline"
+                PIPELINE_NAME: "compliance"
             }
         ],
         IMAGE_ARN: '296062557786.dkr.ecr.us-west-2.amazonaws.com/kovr:latest'

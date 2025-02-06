@@ -30,6 +30,10 @@ export class AppStack extends cdk.Stack {
         const fargateTaskDefinition = new FargateTaskDefinition(this, 'fargateTaskDefinition', {
             memoryLimitMiB: 512,
             cpu: 256,
+            runtimePlatform: {
+                cpuArchitecture: cdk.aws_ecs.CpuArchitecture.ARM64,
+                operatingSystemFamily: cdk.aws_ecs.OperatingSystemFamily.LINUX
+            },
         });
 
         fargateTaskDefinition.addContainer('defaultContainer', {
@@ -47,6 +51,20 @@ export class AppStack extends cdk.Stack {
         });
 
         fargateTaskDefinition.grantRun(pipeRole)
+
+        // Add ECR permissions to the task execution role
+        fargateTaskDefinition.addToExecutionRolePolicy(
+            new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: [
+                    'ecr:GetAuthorizationToken',
+                    'ecr:BatchCheckLayerAvailability',
+                    'ecr:GetDownloadUrlForLayer',
+                    'ecr:BatchGetImage'
+                ],
+                resources: ['*']  // For GetAuthorizationToken, it requires '*'
+            })
+        );
 
         for (const queueDetails of constants.QUEUES) {
             const queue = Queue.fromQueueArn(this, `sqsQueue-${queueDetails.QUEUE_NAME}`, queueDetails.QUEUE_ARN);

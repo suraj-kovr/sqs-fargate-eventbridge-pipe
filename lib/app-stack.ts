@@ -44,19 +44,6 @@ export class AppStack extends cdk.Stack {
             })
         });
 
-        // Add SQS permissions to the task role
-        fargateTaskDefinition.addToTaskRolePolicy(
-            new cdk.aws_iam.PolicyStatement({
-                effect: cdk.aws_iam.Effect.ALLOW,
-                actions: [
-                    'sqs:SendMessage',
-                    'sqs:GetQueueUrl',
-                    'sqs:GetQueueAttributes'
-                ],
-                resources: constants.QUEUES.map(q => q.QUEUE_ARN)
-            })
-        );
-
         // Existing Bedrock permissions
         fargateTaskDefinition.addToTaskRolePolicy(
             new cdk.aws_iam.PolicyStatement({
@@ -95,7 +82,23 @@ export class AppStack extends cdk.Stack {
 
         for (const queueDetails of constants.QUEUES) {
             const queue = Queue.fromQueueArn(this, `sqsQueue-${queueDetails.QUEUE_NAME}`, queueDetails.QUEUE_ARN);
-            queue.grantConsumeMessages(pipeRole)
+            queue.grantConsumeMessages(pipeRole);
+
+            fargateTaskDefinition.addToTaskRolePolicy(
+                new cdk.aws_iam.PolicyStatement({
+                    effect: cdk.aws_iam.Effect.ALLOW,
+                    actions: [
+                        'sqs:SendMessage',
+                        'sqs:GetQueueUrl',
+                        'sqs:GetQueueAttributes'
+                    ],
+                    resources: [
+                        queueDetails.QUEUE_ARN,
+                        queueDetails.UPDATE_QUEUE_ARN
+                    ]
+                })
+            );
+
             const cfnPipe = new CfnPipe(this, `dsEventBridgePipe-${queueDetails.QUEUE_NAME}`, {
                 name: `ds-sqs-pipe-${queue.queueName}`,
                 description: 'Eventbridge Pipe to invoke ECS',
@@ -137,10 +140,6 @@ export class AppStack extends cdk.Stack {
                                         {
                                             name: 'PAYLOAD',
                                             value: JsonPath.stringAt('$.body')
-                                        },
-                                        {
-                                            name: 'AWS_DEFAULT_REGION',
-                                            value: 'us-west-2'  // Force the region
                                         }
                                     ]
                                 },

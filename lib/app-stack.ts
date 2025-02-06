@@ -44,6 +44,18 @@ export class AppStack extends cdk.Stack {
             })
         });
 
+        fargateTaskDefinition.addToTaskRolePolicy(
+            new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: [
+                    'bedrock:InvokeModel'
+                ],
+                resources: [
+                    'arn:aws:bedrock:us-west-2::foundation-model/amazon.nova-pro-v1:0',
+                ]
+            })
+        );
+
         const pipeRole = new Role(this, 'dsEventBridgeIAMRole', {
             roleName: 'ds-event-bridge-iam-role',
             description: 'IAM Role for EventBridge Pipe',

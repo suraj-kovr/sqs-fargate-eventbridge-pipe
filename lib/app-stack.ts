@@ -44,6 +44,20 @@ export class AppStack extends cdk.Stack {
             })
         });
 
+        // Add SQS permissions to the task role
+        fargateTaskDefinition.addToTaskRolePolicy(
+            new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: [
+                    'sqs:SendMessage',
+                    'sqs:GetQueueUrl',
+                    'sqs:GetQueueAttributes'
+                ],
+                resources: constants.QUEUES.map(q => q.QUEUE_ARN)
+            })
+        );
+
+        // Existing Bedrock permissions
         fargateTaskDefinition.addToTaskRolePolicy(
             new cdk.aws_iam.PolicyStatement({
                 effect: cdk.aws_iam.Effect.ALLOW,

@@ -18,7 +18,7 @@ const appConstants: Record<string, AppConstants> = {
                 PIPELINE_NAME: "compliance-artifacts-pipeline"
             }
         ],
-        IMAGE_ARN: '767397841522.dkr.ecr.ap-south-1.amazonaws.com/kovr'
+        IMAGE_ARN: '296062557786.dkr.ecr.us-west-2.amazonaws.com/kovr:latest'
     },
     "qa": {
         QUEUES: [

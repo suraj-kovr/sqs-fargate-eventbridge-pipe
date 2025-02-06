@@ -48,9 +48,9 @@ export class AppStack extends cdk.Stack {
         fargateTaskDefinition.grantRun(pipeRole)
 
         for (const queueDetails of constants.QUEUES) {
-            const queue = Queue.fromQueueArn(this, 'sqsQueue', queueDetails.QUEUE_ARN);
+            const queue = Queue.fromQueueArn(this, `sqsQueue-${queueDetails.QUEUE_NAME}`, queueDetails.QUEUE_ARN);
             queue.grantConsumeMessages(pipeRole)
-            const cfnPipe = new CfnPipe(this, 'dsEventBridgePipe', {
+            const cfnPipe = new CfnPipe(this, `dsEventBridgePipe-${queueDetails.QUEUE_NAME}`, {
                 name: `ds-sqs-pipe-${queue.queueName}`,
                 description: 'Eventbridge Pipe to invoke ECS',
                 roleArn: pipeRole.roleArn,

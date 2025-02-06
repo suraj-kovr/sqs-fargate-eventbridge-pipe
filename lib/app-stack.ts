@@ -8,6 +8,7 @@ import { Role, ServicePrincipal } from "aws-cdk-lib/aws-iam";
 import { JsonPath } from "aws-cdk-lib/aws-stepfunctions";
 import { RetentionDays } from "aws-cdk-lib/aws-logs";
 import { CfnOutput } from "aws-cdk-lib";
+import { appConstants } from './constants';
 
 export class AppStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {

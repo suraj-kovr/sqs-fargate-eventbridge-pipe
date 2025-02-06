@@ -41,3 +41,5 @@ const appConstants: Record<string, AppConstants> = {
         IMAGE_ARN: ""
     }
 }
+
+export { appConstants };

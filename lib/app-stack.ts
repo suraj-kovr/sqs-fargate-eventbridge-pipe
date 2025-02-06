@@ -52,6 +52,7 @@ export class AppStack extends cdk.Stack {
                 ],
                 resources: [
                     'arn:aws:bedrock:us-west-2::foundation-model/amazon.nova-pro-v1:0',
+                    'arn:aws:bedrock:us-east-1::foundation-model/amazon.nova-micro-v1:0'
                 ]
             })
         );
@@ -122,6 +123,10 @@ export class AppStack extends cdk.Stack {
                                         {
                                             name: 'PAYLOAD',
                                             value: JsonPath.stringAt('$.body')
+                                        },
+                                        {
+                                            name: 'AWS_DEFAULT_REGION',
+                                            value: 'us-west-2'  // Force the region
                                         }
                                     ]
                                 },

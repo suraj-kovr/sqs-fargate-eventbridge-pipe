@@ -153,12 +153,12 @@ export class AppStack extends cdk.Stack {
                 },
             });
 
-            new CfnOutput(this, 'sqsQueueOutput', {
+            new CfnOutput(this, `sqsQueueOutput-${queueName}`, {
                 description: 'SQS Queue Url',
                 value: queue.queueUrl
             })
 
-            new CfnOutput(this, 'eventbridgePipeOutput', {
+            new CfnOutput(this, `eventbridgePipeOutput-${queueName}`, {
                 description: 'EventBridge Pipe',
                 value: cfnPipe.name!
             })

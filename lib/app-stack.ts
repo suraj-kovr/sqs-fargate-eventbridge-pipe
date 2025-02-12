@@ -39,7 +39,7 @@ export class AppStack extends cdk.Stack {
         fargateTaskDefinition.addContainer('defaultContainer', {
             image: ContainerImage.fromRegistry(constants.IMAGE_ARN),
             logging: LogDriver.awsLogs({
-                streamPrefix: '/app/',
+                streamPrefix: '/app',
                 logRetention: RetentionDays.ONE_DAY
             })
         });

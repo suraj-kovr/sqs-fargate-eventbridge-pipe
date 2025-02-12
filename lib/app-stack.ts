@@ -81,6 +81,23 @@ export class AppStack extends cdk.Stack {
             })
         );
 
+        // Add S3 permissions to the task role
+        fargateTaskDefinition.addToTaskRolePolicy(
+            new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: [
+                    's3:GetObject',
+                    's3:HeadObject',
+                    's3:ListBucket',
+                    's3:GetObjectVersion'
+                ],
+                resources: [
+                    'arn:aws:s3:::*/*',
+                    'arn:aws:s3:::*'
+                ]
+            })
+        );
+
         for (const queueDetails of constants.QUEUES) {
             const queueName = queueDetails.QUEUE_ARN.split(':').pop();
             const queue = Queue.fromQueueArn(this, `sqsQueue-${queueName}`, queueDetails.QUEUE_ARN);

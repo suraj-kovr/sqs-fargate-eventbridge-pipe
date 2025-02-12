@@ -44,7 +44,6 @@ export class AppStack extends cdk.Stack {
             })
         });
 
-        // Existing Bedrock permissions
         fargateTaskDefinition.addToTaskRolePolicy(
             new cdk.aws_iam.PolicyStatement({
                 effect: cdk.aws_iam.Effect.ALLOW,
@@ -53,6 +52,8 @@ export class AppStack extends cdk.Stack {
                 ],
                 resources: [
                     'arn:aws:bedrock:us-west-2::foundation-model/amazon.nova-pro-v1:0',
+                    'arn:aws:bedrock:us-east-1::foundation-model/amazon.nova-pro-v1:0',
+                    'arn:aws:bedrock:us-west-2::foundation-model/amazon.nova-micro-v1:0',
                     'arn:aws:bedrock:us-east-1::foundation-model/amazon.nova-micro-v1:0'
                 ]
             })

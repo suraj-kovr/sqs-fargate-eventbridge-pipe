@@ -22,6 +22,11 @@ const appConstants: Record<string, AppConstants> = {
                 UPDATE_QUEUE_ARN: "arn:aws:sqs:us-west-2:296062557786:assessment-listner-queue",
                 PIPELINE_NAME: "assessment"
             },
+            {
+                QUEUE_ARN: "arn:aws:sqs:us-west-2:296062557786:artifacts-listner-queue",
+                UPDATE_QUEUE_ARN: "arn:aws:sqs:us-west-2:296062557786:artifacts-output-queue",
+                PIPELINE_NAME: "artifacts"
+            },
         ],
         IMAGE_ARN: '296062557786.dkr.ecr.us-west-2.amazonaws.com/kovr:latest'
     },

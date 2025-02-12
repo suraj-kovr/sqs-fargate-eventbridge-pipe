@@ -48,7 +48,7 @@ const appConstants: Record<string, AppConstants> = {
                 PIPELINE_NAME: "artifacts"
             },
         ],
-        IMAGE_ARN: ""
+        IMAGE_ARN: "650251729525.dkr.ecr.us-west-2.amazonaws.com/kovr:latest"
     },
     "prod": {
         QUEUES: [

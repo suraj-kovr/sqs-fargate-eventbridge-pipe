@@ -33,10 +33,20 @@ const appConstants: Record<string, AppConstants> = {
     "qa": {
         QUEUES: [
             {
-                QUEUE_ARN: "",
-                UPDATE_QUEUE_ARN: "",
-                PIPELINE_NAME: ""
-            }
+                QUEUE_ARN: "arn:aws:sqs:us-west-2:650251729525:compliance-artifacts-queue",
+                UPDATE_QUEUE_ARN: "arn:aws:sqs:us-west-2:650251729525:compliance-artifacts-update-queue",
+                PIPELINE_NAME: "compliance"
+            },
+            {
+                QUEUE_ARN: "arn:aws:sqs:us-west-2:650251729525:assessment-input-queue",
+                UPDATE_QUEUE_ARN: "arn:aws:sqs:us-west-2:650251729525:assessment-listner-queue",
+                PIPELINE_NAME: "assessment"
+            },
+            {
+                QUEUE_ARN: "arn:aws:sqs:us-west-2:650251729525:artifacts-listner-queue",
+                UPDATE_QUEUE_ARN: "arn:aws:sqs:us-west-2:650251729525:artifacts-output-queue",
+                PIPELINE_NAME: "artifacts"
+            },
         ],
         IMAGE_ARN: ""
     },
